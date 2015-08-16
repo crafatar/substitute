@@ -80,7 +80,7 @@ substitute() {
   app_dir="${whereami}/${deploy_app}"
 
   if [  "${mode}" = "deploy" ]; then
-    pushd "${app_dir}/"
+    pushd "${app_dir}/" > /dev/null
     commit="origin/master"
     if [ -n "${1}" ]; then
       commit="${1}"
@@ -98,7 +98,7 @@ substitute() {
     npm install --production 2>&1 | grep "" # disable colors
     info "npm install completed"
 
-    popd
+    popd > /dev/null
   fi
   start "${deploy_app}" "${app_dir}" "${port}"
 
