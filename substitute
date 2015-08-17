@@ -22,6 +22,8 @@ script="www.js"
 this="$(which "${0}")"
 whereami="$(cd "$( dirname "$(readlink "${this}" || echo "${this}")")"; pwd)"
 
+cd "$whereami"
+
 deploy_dir="${whereami}/deploy"
 nd_file="${deploy_dir}/next_deploy"
 
