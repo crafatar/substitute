@@ -15,10 +15,10 @@ A load balancer (such as nginx) is responsible for switching traffic.
 # Usage
 
 ```shell
-./deploy.sh deploy [COMMIT]
-./deploy.sh rollback
-./deploy.sh start <APP_NAME> <APP_DIR> <PORT>
-./deploy.sh stop <APP_NAME>
+./substitute deploy [COMMIT]
+./substitute rollback
+./substitute start <APP_NAME> <APP_DIR> <PORT>
+./substitute stop <APP_NAME>
 ```
 
 # nginx config
