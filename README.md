@@ -31,7 +31,7 @@ upstream my_app {
 
 server {
     listen 80;
-    server_name crafatar.com;
+    server_name my_app.com;
     location / {
         proxy_pass http://my_app;
         …
