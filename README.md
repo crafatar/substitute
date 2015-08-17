@@ -10,7 +10,7 @@ Once the deployment on _'B'_ is completed, traffic is switched over and _'A'_ ca
 
 A load balancer (such as nginx) is responsible for switching traffic.
 
-![graph](https://i.imgur.com/NOcG42O.png)
+![graph](https://i.imgur.com/3JCU7Qu.png)
 
 # Usage
 
