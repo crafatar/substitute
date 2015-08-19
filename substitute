@@ -15,10 +15,7 @@ error() {
   tput sgr0
 }
 
-app="crafatar"
-script="www.js"
-
-# determine the script's location
+# determine this script's location
 this="$(which "${0}")"
 whereami="$(cd "$( dirname "$(readlink "${this}" || echo "${this}")")"; pwd)"
 
@@ -26,6 +23,7 @@ cd "$whereami"
 
 deploy_dir="${whereami}/deploy"
 nd_file="${deploy_dir}/next_deploy"
+source "${deploy_dir}/config"
 
 if [ ! -f "${nd_file}" ]; then
   echo "a" > "${nd_file}"
@@ -46,7 +44,7 @@ start() {
   start_dir="${2}"
   port="${3}"
   info "Starting ${start_name}"
-  env PORT="${port}" forever start --uid "${start_name}" -l "logs/forever.log" -o "${start_dir}/logs/out.log" -e "${start_dir}/logs/error.log" --workingDir "${start_dir}" --sourceDir "${start_dir}" -p "${start_dir}" -a --minUptime 9000 --killSignal SIGTERM "${script}" > /dev/null
+  env PORT="${port}" forever start --uid "${start_name}" -l "${log_forever}" -o "${start_dir}/${log_out}" -e "${start_dir}/${log_error}" --workingDir "${start_dir}" --sourceDir "${start_dir}" -p "${start_dir}" -a --minUptime 9000 --killSignal SIGTERM "${start_script}" > /dev/null
 }
 
 stop() {
