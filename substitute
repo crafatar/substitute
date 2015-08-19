@@ -135,7 +135,7 @@ substitute() {
     trap cleanup INT # run cleanup on ^C
     info "Showing log for 10 seconds"
     echo
-    tail -n 0 -F "${app_dir}/logs/forever.log" &
+    tail -n 0 -F "${app_dir}/${log_forever}" &
     tail_pid="$!"
     sleep 10
     cleanup
