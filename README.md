@@ -17,7 +17,7 @@ A load balancer (such as nginx) is responsible for switching traffic.
 ```shell
 ./substitute deploy [COMMIT]
 ./substitute rollback
-./substitute start <APP_NAME> <APP_DIR> <PORT>
+./substitute start <APP_NAME> <APP_DIR> <HOST> <PORT>
 ./substitute stop <APP_NAME>
 ```
 

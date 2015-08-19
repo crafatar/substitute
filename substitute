@@ -50,11 +50,12 @@ hook "begin"
 start() {
   start_name="${1}"
   start_dir="${2}"
-  port="${3}"
+  host="${3}"
+  port="${4}"
   hook "pre_start"
 
   info "Starting ${start_name}"
-  env PORT="${port}" forever start --uid "${start_name}" -l "${log_forever}" -o "${start_dir}/${log_out}" -e "${start_dir}/${log_error}" --workingDir "${start_dir}" --sourceDir "${start_dir}" -p "${start_dir}" -a --minUptime 9000 --killSignal SIGTERM "${start_script}" > /dev/null
+  env BIND="${host}" PORT="${port}" forever start --uid "${start_name}" -l "${log_forever}" -o "${start_dir}/${log_out}" -e "${start_dir}/${log_error}" --workingDir "${start_dir}" --sourceDir "${start_dir}" -p "${start_dir}" -a --minUptime 9000 --killSignal SIGTERM "${start_script}" > /dev/null
 
   hook "post_start"
 }
@@ -87,10 +88,10 @@ substitute() {
   fi
 
   stop_char="a"
-  port="3001"
+  port="${port_b}"
   if [ "${next_deploy}" = "a" ]; then
     stop_char="b"
-    port="3002"
+    port="${port_a}"
   fi
 
   stop_app="${app}_${stop_char}"
@@ -121,7 +122,7 @@ substitute() {
 
     popd > /dev/null
   fi
-  start "${deploy_app}" "${app_dir}" "${port}"
+  start "${deploy_app}" "${app_dir}" "${host}" "${port}"
 
   if [ "${action}" = "deploy" ]; then
     cleanup() {
@@ -158,14 +159,14 @@ rollback)
   action="rollback"
   substitute;;
 start)
-  start "${2}" "${3}" "${4}";;
+  start "${2}" "${3}" "${4}" "${5}";;
 stop)
   stop "${2}";;
 *)
   echo "Usage:"
   echo "  $0 deploy [COMMIT]"
   echo "  $0 rollback"
-  echo "  $0 start <APP_NAME> <APP_DIR> <PORT>"
+  echo "  $0 start <APP_NAME> <APP_DIR> <HOST> <PORT>"
   echo "  $0 stop <APP_NAME>"
 esac
 
