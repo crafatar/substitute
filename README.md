@@ -21,6 +21,11 @@ A load balancer (such as nginx) is responsible for switching traffic.
 ./substitute stop <APP_NAME>
 ```
 
+## config
+
+Be sure to copy `deploy/config.sample` to `deploy/config`.
+And don't gorget to adjust it for your needs :)
+
 ## Script hooks
 
 You can create custom scripts that will run on certain events.
