@@ -1,6 +1,3 @@
-Zero Downtime Deployment
-
-
 # How it works
 
 This follows a very simple concept:
