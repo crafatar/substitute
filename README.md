@@ -1,6 +1,3 @@
-Zero Downtime Deployment
-
-
 # How it works
 
 This follows a very simple concept:
@@ -43,7 +40,7 @@ Script names (in their typical order for a deployment):
 - `post_stop`
 - `end`
 
-These scripts run in the context of the `substitute` script and you have access to it's variables.  
+These scripts run in the context of the `substitute` script and you have access to its variables.
 Please note that the working directory varies.  
 You can use them for whatever you want, such as creating required folders or symlinks, executing firewall commands or sending notifications. Be creative! :sunglasses:
 
