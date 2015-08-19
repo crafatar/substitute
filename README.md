@@ -21,6 +21,25 @@ A load balancer (such as nginx) is responsible for switching traffic.
 ./substitute stop <APP_NAME>
 ```
 
+## Script hooks
+
+You can create custom scripts that will run on certain events.
+Scripts are searched for in `deploy/scripts/{name}.sh`
+
+Script names (in their typical order for a deployment):
+
+- `begin`
+- `pre_install`
+- `post_install`
+- `pre_start`
+- `post_start`
+- `pre_stop`
+- `post_stop`
+- `end`
+
+These scripts run in the context of the substitute script and you have access to it's variables.
+You can use them for whatever you want, such as creating required folders or symlinks, executing firewall commands or sending notifications. Be creative! :sunglasses:
+
 # nginx config
 
 ```nginx

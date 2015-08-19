@@ -15,6 +15,14 @@ error() {
   tput sgr0
 }
 
+hook() {
+  file="${script_dir}/${1}.sh"
+  if [ -f "$file" ]; then
+    info "Running script ${1}"
+    source "$file"
+  fi
+}
+
 # determine this script's location
 this="$(which "${0}")"
 whereami="$(cd "$( dirname "$(readlink "${this}" || echo "${this}")")"; pwd)"
@@ -22,6 +30,7 @@ whereami="$(cd "$( dirname "$(readlink "${this}" || echo "${this}")")"; pwd)"
 cd "$whereami"
 
 deploy_dir="${whereami}/deploy"
+script_dir="${deploy_dir}/scripts"
 nd_file="${deploy_dir}/next_deploy"
 source "${deploy_dir}/config"
 
@@ -36,22 +45,32 @@ if [ -z "${next_deploy}" ]; then
   next_deploy="a"
 fi
 
+hook "begin"
+
 start() {
   start_name="${1}"
   start_dir="${2}"
   port="${3}"
+  hook "pre_start"
+
   info "Starting ${start_name}"
   env PORT="${port}" forever start --uid "${start_name}" -l "${log_forever}" -o "${start_dir}/${log_out}" -e "${start_dir}/${log_error}" --workingDir "${start_dir}" --sourceDir "${start_dir}" -p "${start_dir}" -a --minUptime 9000 --killSignal SIGTERM "${start_script}" > /dev/null
+
+  hook "post_start"
 }
 
 stop() {
   stop_name="$1"
+  hook "pre_stop"
+
   info "Shutting down ${stop_name} ..."
   if forever stop "${stop_name}" > /dev/null; then
     info "Stopped ${stop_name}."
   else
     info "Couldn't stop ${stop_name}. Maybe it was not running?"
   fi
+
+  hook "post_stop"
 }
 
 is_running() {
@@ -84,6 +103,8 @@ substitute() {
       commit="${1}"
     fi
 
+    hook "pre_install"
+
     info "starting deploy for ${deploy_app}"
     tput setf 3
     git fetch --all
@@ -95,6 +116,8 @@ substitute() {
     tput setf 3
     npm install --production 2>&1 | grep "" # disable colors
     info "npm install completed"
+
+    hook "post_install"
 
     popd > /dev/null
   fi
@@ -145,3 +168,5 @@ stop)
   echo "  $0 start <APP_NAME> <APP_DIR> <PORT>"
   echo "  $0 stop <APP_NAME>"
 esac
+
+hook "end"
