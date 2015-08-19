@@ -36,9 +36,6 @@ if [ -z "${next_deploy}" ]; then
   next_deploy="a"
 fi
 
-# can be changed to "rollback" later
-mode="deploy"
-
 start() {
   start_name="${1}"
   start_dir="${2}"
@@ -79,7 +76,7 @@ substitute() {
   stop_app="${app}_${stop_char}"
   app_dir="${whereami}/${deploy_app}"
 
-  if [  "${mode}" = "deploy" ]; then
+  if [  "${action}" = "deploy" ]; then
     pushd "${app_dir}/" > /dev/null
     commit="origin/master"
     if [ -n "${1}" ]; then
@@ -102,7 +99,7 @@ substitute() {
   fi
   start "${deploy_app}" "${app_dir}" "${port}"
 
-  if [ "${mode}" = "deploy" ]; then
+  if [ "${action}" = "deploy" ]; then
     cleanup() {
       kill "${tail_pid}"
     }
@@ -127,14 +124,15 @@ substitute() {
   info "Setting next_deploy to ${stop_app}"
   echo "${stop_char}" > "${nd_file}"
 
-  tput setf 2; echo -e "\n> ${mode} completed!\n"; tput sgr0
+  tput setf 2; echo -e "\n> ${action} completed!\n"; tput sgr0
 }
 
 case "${1}" in
 deploy)
+  action="deploy"
   substitute "${2}";;
 rollback)
-  mode="rollback"
+  action="rollback"
   substitute;;
 start)
   start "${2}" "${3}" "${4}";;
