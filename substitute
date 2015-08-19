@@ -45,6 +45,9 @@ if [ -z "${next_deploy}" ]; then
   next_deploy="a"
 fi
 
+# reset forever's list layout
+forever columns reset > /dev/null
+
 hook "begin"
 
 start() {
