@@ -57,6 +57,7 @@ server {
     server_name my_app.com;
     location / {
         proxy_pass http://my_app;
+        proxy_set_header Host $host;
         …
     }
 }
