@@ -34,6 +34,7 @@ Scripts are searched for in `deploy/scripts/{name}.sh`
 Script names (in their typical order for a deployment):
 
 - `begin`
+- `pre_checkout`
 - `pre_install`
 - `post_install`
 - `pre_start`
@@ -42,7 +43,8 @@ Script names (in their typical order for a deployment):
 - `post_stop`
 - `end`
 
-These scripts run in the context of the `substitute` script and you have access to it's variables.
+These scripts run in the context of the `substitute` script and you have access to it's variables.  
+Please note that the working directory varies.  
 You can use them for whatever you want, such as creating required folders or symlinks, executing firewall commands or sending notifications. Be creative! :sunglasses:
 
 # nginx config

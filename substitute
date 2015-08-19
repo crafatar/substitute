@@ -104,7 +104,7 @@ substitute() {
       commit="${1}"
     fi
 
-    hook "pre_install"
+    hook "pre_checkout"
 
     info "starting deploy for ${deploy_app}"
     tput setf 3
@@ -114,6 +114,7 @@ substitute() {
     git reset --hard "${commit}"
     info "git checkout completed"
 
+    hook "pre_install"
     tput setf 3
     npm install --production 2>&1 | grep "" # disable colors
     info "npm install completed"
