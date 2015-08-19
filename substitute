@@ -75,7 +75,7 @@ stop() {
 }
 
 is_running() {
-  forever list --no-color | grep -v "STOPPED" | grep -q "${1}"
+  forever list --no-color | fgrep -v "STOPPED" | fgrep -q "${1}"
 }
 
 substitute() {
@@ -116,7 +116,7 @@ substitute() {
 
     hook "pre_install"
     tput setf 3
-    npm install --production 2>&1 | grep "" # disable colors
+    npm install --production 2>&1 | fgrep "" # disable colors
     info "npm install completed"
 
     hook "post_install"
