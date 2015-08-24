@@ -114,8 +114,6 @@ Create `deploy/scripts/running.sh`:
 ```bash
 #!/usr/bin/env bash
 
-set -e
-
 info "Switching nginx upstream to port ${port}"
 cat <<EOF > /var/lib/my_app/nginx-upstream.conf
 upstream my_app {
