@@ -18,7 +18,7 @@ error() {
 hook() {
   file="${script_dir}/${1}.sh"
   if [ -f "$file" ]; then
-    info "Running script ${1}"
+    info "Running script hook '${1}'"
     source "$file"
   fi
 }
@@ -147,6 +147,8 @@ substitute() {
     error "${deploy_app} is no longer running, deploy failed"
     return 1
   fi
+
+  hook "running"
 
   stop "${stop_app}"
   info "Setting next_deploy to ${stop_app}"
