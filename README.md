@@ -42,7 +42,7 @@ Script names (in their typical order for a deployment):
 - `end`
 
 These scripts run in the context of the `substitute` script and you have access to its variables.  
-Please note that the working directory varies.  
+Please note that the working directory varies. Refer to the source for details.  
 You can use them for whatever you want, such as creating required folders or symlinks, updating your load balancer, or sending notifications. Be creative! :sunglasses:
 
 # Details
@@ -53,11 +53,11 @@ Deployment works as follows:
 0. *B* (not running) is updated, built, and then started.
 0. After making sure *B* is running, the load balancer has to send new connections to port 3002.
 0. *A* receives a `SIGTERM`.  
-   That tells it to close the server and no longer accept connections.  
+   That tells it to close the server and no longer accept new connections.  
    _(This has to be implemented in the application, see [below](#sigterm))_
 0. At this point, all *new* connections are routed to *B*
 0. *A* is still running until all running requests are answered. It is then shut down.
-0. `next_deploy` will be set to *A*
+0. `next_deploy` is set to *A*
 
 For the next deployment, repeat the same steps with a and b swapped.
 
