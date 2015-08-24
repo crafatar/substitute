@@ -115,7 +115,7 @@ Create `deploy/scripts/running.sh`:
 #!/usr/bin/env bash
 info "Switching nginx upstream to port ${port}"
 cat <<EOF > /var/lib/my_app/nginx-upstream.conf;
-upstream crafatar {
+upstream my_app {
     server 127.0.0.1:${port};
 }
 EOF
