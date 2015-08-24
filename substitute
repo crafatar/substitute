@@ -20,7 +20,9 @@ hook() {
   file="${script_dir}/${script}.sh"
   if [ -f "${file}" ]; then
     info "Running script hook '${script}'"
-    if ! source "${file}"; then
+    # hack to 'try' -e on subroutines
+    set +e; ( set -e; source "${file}" ); status="$?"; set -e
+    if [ "${status}" -gt 0 ]; then
       error "Script hook '${script}' failed"
       return 1
     fi
@@ -152,7 +154,9 @@ substitute() {
     return 1
   fi
 
-  if ! hook "running"; then
+  # hack to 'try' -e on subroutines
+  set +e; ( set -e; hook "running" ); status="$?"; set -e
+  if [ "${status}" -gt 0 ]; then
     stop "${deploy_app}"
     return 1
   fi
@@ -163,25 +167,32 @@ substitute() {
 }
 
 action="${1}"
-case "${action}" in
-deploy)
-  substitute "${2}";;
-rollback)
-  substitute;;
-start)
-  start "${2}" "${3}" "${4}" "${5}";;
-stop)
-  stop "${2}";;
-*)
-  echo "Usage:"
-  echo "  ${0} deploy [COMMIT]"
-  echo "  ${0} rollback"
-  echo "  ${0} start <APP_NAME> <APP_DIR> <HOST> <PORT>"
-  echo "  ${0} stop <APP_NAME>"
-esac && success="true" || success="false"
+set +e;
+(
+  # hack to 'try' -e on subroutines
+  set -e
+  case "${action}" in
+  deploy)
+    substitute "${2}";;
+  rollback)
+    substitute;;
+  start)
+    start "${2}" "${3}" "${4}" "${5}";;
+  stop)
+    stop "${2}";;
+  *)
+    echo "Usage:"
+    echo "  ${0} deploy [COMMIT]"
+    echo "  ${0} rollback"
+    echo "  ${0} start <APP_NAME> <APP_DIR> <HOST> <PORT>"
+    echo "  ${0} stop <APP_NAME>"
+  esac
+)
+status="$?"
+set -e
 
 echo ""
-if [ "${success}" == "true" ]; then
+if [ "${status}" -eq 0 ]; then
   tput setf 2; echo -e "> Action ${action} completed."; tput sgr0
 else
   error "Action ${action} failed."
