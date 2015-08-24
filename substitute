@@ -16,10 +16,14 @@ error() {
 }
 
 hook() {
-  file="${script_dir}/${1}.sh"
+  script="${1}"
+  file="${script_dir}/$script.sh"
   if [ -f "$file" ]; then
-    info "Running script hook '${1}'"
-    source "$file"
+    info "Running script hook '$script'"
+    if ! source "$file"; then
+      error "Script hook '$script' failed"
+      return 1
+    fi
   fi
 }
 
@@ -148,7 +152,10 @@ substitute() {
     return 1
   fi
 
-  hook "running"
+  if ! hook "running"; then
+    stop "${deploy_app}"
+    return 1
+  fi
 
   stop "${stop_app}"
   info "Setting next_deploy to ${stop_app}"
