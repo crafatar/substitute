@@ -136,7 +136,11 @@ substitute() {
 
   if [ "${action}" = "deploy" ]; then
     cleanup() {
+      echo
       kill "${tail_pid}"
+      error "${action} aborted by user"
+      stop "${deploy_app}"
+      return 1
     }
     trap cleanup INT # run cleanup on ^C
     info "Showing log for 10 seconds"
@@ -144,13 +148,13 @@ substitute() {
     tail -n 0 -F "${app_dir}/${log_forever}" &
     tail_pid="$!"
     sleep 10
-    cleanup
+    kill "${tail_pid}"
   fi
 
   if is_running "${deploy_app}"; then
     tput setf 2; echo -e "\n> ${deploy_app} has been deployed on port ${port}.\n"; tput sgr0
   else
-    error "${deploy_app} is no longer running, deploy failed"
+    error "${deploy_app} is no longer running, ${action} failed"
     return 1
   fi
 
