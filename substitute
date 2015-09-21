@@ -64,7 +64,7 @@ start() {
   hook "pre_start"
 
   info "Starting ${start_name}"
-  env BIND="${host}" PORT="${port}" forever start --uid "${start_name}" -l "${log_forever}" -o "${start_dir}/${log_out}" -e "${start_dir}/${log_error}" --workingDir "${start_dir}" --sourceDir "${start_dir}" -p "${start_dir}" -a --minUptime 9000 --killSignal SIGTERM "${start_script}" > /dev/null
+  env BIND="${host}" PORT="${port}" forever start --uid "${start_name}" -l "${log_file}" --workingDir "${start_dir}" --sourceDir "${start_dir}" -p "${start_dir}" -a --minUptime 9000 --killSignal SIGTERM "${start_script}" > /dev/null
 
   hook "post_start"
 }
@@ -145,7 +145,7 @@ substitute() {
     trap cleanup INT # run cleanup on ^C
     info "Showing log for 10 seconds"
     echo
-    tail -n 0 -F "${app_dir}/${log_forever}" &
+    tail -n 0 -F "${app_dir}/${log_file}" &
     tail_pid="$!"
     sleep 10
     kill "${tail_pid}"
