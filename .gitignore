@@ -1,5 +1,5 @@
 *_a/
 *_b/
-deploy/scripts/*.sh
+deploy/scripts/*
 deploy/next_deploy
 deploy/config
