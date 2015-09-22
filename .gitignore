@@ -3,3 +3,4 @@
 deploy/scripts/*
 deploy/next_deploy
 deploy/config
+current

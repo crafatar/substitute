@@ -166,6 +166,10 @@ substitute() {
   fi
 
   stop "${stop_app}"
+
+  info "Updating 'current' symlink"
+  ln -hsvf "${deploy_app}" "current"
+
   info "Setting next_deploy to ${stop_app}"
   echo "${stop_char}" > "${nd_file}"
 }
