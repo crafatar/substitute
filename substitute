@@ -126,7 +126,7 @@ substitute() {
     hook "pre_install"
     tput setf 3
     set -o pipefail
-    npm install --production 2>&1 | fgrep "" || return 1 # disable colors
+    npm install --production 2>&1 | fgrep "" # disable colors
     set +o pipefail
     info "npm install completed"
 
