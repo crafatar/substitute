@@ -185,7 +185,11 @@ substitute() {
   stop "${stop_app}"
 
   info "Updating 'current' symlink"
-  ln -hsvf "${deploy_app}" "current"
+  if [ "$(uname)" = "Darwin" ]; then
+    ln -hsvf "${deploy_app}" "current"
+  else
+    ln -nsvf "${deploy_app}" "current"
+  fi
 
   info "Setting next_deploy to ${stop_app}"
   echo "${stop_char}" > "${nd_file}"
