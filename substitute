@@ -209,8 +209,8 @@ set +e;
     echo "Usage:"
     echo "  ${0} deploy [COMMIT]"
     echo "  ${0} rollback"
-    echo "  ${0} start <APP_NAME> <APP_DIR> <HOST> <PORT>"
     echo "  ${0} stop <APP_NAME>"
+    echo "  ${0} restart"
   esac
 )
 status="$?"
