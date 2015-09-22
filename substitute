@@ -201,8 +201,6 @@ set +e;
     substitute "${2}";;
   rollback)
     substitute;;
-  start)
-    start "${2}" "${3}" "${4}" "${5}";;
   stop)
     stop "${2}";;
   restart)
