@@ -217,11 +217,13 @@ status="$?"
 set -e
 
 echo ""
-if [ "${status}" -eq 0 ]; then
-  tput setf 2; echo -e "> Action ${action} completed."; tput sgr0
-else
-  error "Action ${action} failed."
+if [ -n "${action}" ]; then
+  if [ "${status}" -eq 0 ]; then
+    tput setf 2; echo -e "> Action ${action} completed."; tput sgr0
+  else
+    error "Action ${action} failed."
+  fi
+  echo ""
 fi
-echo ""
 
 hook "end"
