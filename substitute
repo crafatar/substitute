@@ -83,6 +83,21 @@ stop() {
   hook "post_stop"
 }
 
+restart() {
+  current_char="a"
+  port="${port_b}"
+  if [ "${next_deploy}" = "a" ]; then
+    current_char="b"
+    port="${port_a}"
+  fi
+
+  current_app="${app}_${current_char}"
+  app_dir="${whereami}/${current_app}"
+
+  stop "${current_app}"
+  start "${current_app}" "${app_dir}" "${host}" "${port}"
+}
+
 is_running() {
   forever list --no-color | fgrep -v "STOPPED" | fgrep -q "${1}"
 }
@@ -190,6 +205,8 @@ set +e;
     start "${2}" "${3}" "${4}" "${5}";;
   stop)
     stop "${2}";;
+  restart)
+    restart;;
   *)
     echo "Usage:"
     echo "  ${0} deploy [COMMIT]"
