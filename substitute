@@ -3,16 +3,21 @@
 # exit on error
 set -e
 
+color() {
+  # avoid and ignore tput errors
+  set +e; tput -Txterm "${@}"; set -e
+}
+
 info() {
-  tput setf 6 # yellow
+  color setf 6 # yellow
   echo "> ${*}"
-  tput sgr0
+  color sgr0
 }
 
 error() {
-  tput setf 4 # red
+  color setf 4 # red
   echo "> ${*}"
-  tput sgr0
+  color sgr0
 }
 
 hook() {
@@ -131,15 +136,15 @@ substitute() {
     hook "pre_checkout"
 
     info "starting deploy for ${deploy_app}"
-    tput setf 3
+    color setf 3
     git fetch --all
     info "git fetch completed"
-    tput setf 3
+    color setf 3
     git reset --hard "${commit}"
     info "git checkout completed"
 
     hook "pre_install"
-    tput setf 3
+    color setf 3
     set -o pipefail
     npm install --production 2>&1 | fgrep "" # disable colors
     set +o pipefail
@@ -169,7 +174,7 @@ substitute() {
   fi
 
   if is_running "${deploy_app}"; then
-    tput setf 2; echo -e "\n> ${deploy_app} has been deployed on port ${port}.\n"; tput sgr0
+    color setf 2; echo -e "\n> ${deploy_app} has been deployed on port ${port}.\n"; color sgr0
   else
     error "${deploy_app} is no longer running, ${action} failed"
     return 1
@@ -223,7 +228,7 @@ set -e
 echo ""
 if [ -n "${action}" ]; then
   if [ "${status}" -eq 0 ]; then
-    tput setf 2; echo -e "> Action ${action} completed."; tput sgr0
+    color setf 2; echo -e "> Action ${action} completed."; color sgr0
   else
     error "Action ${action} failed."
   fi
