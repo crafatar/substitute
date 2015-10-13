@@ -90,10 +90,10 @@ stop() {
 
 restart() {
   current_char="a"
-  port="${port_b}"
+  port="${port_a}"
   if [ "${next_deploy}" = "a" ]; then
     current_char="b"
-    port="${port_a}"
+    port="${port_b}"
   fi
 
   current_app="${app}_${current_char}"
